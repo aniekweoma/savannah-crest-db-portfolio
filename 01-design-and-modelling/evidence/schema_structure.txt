@@ -1,0 +1,36 @@
+               List of relations
+ Schema |       Name        | Type  |  Owner   
+--------+-------------------+-------+----------
+ public | folio_charges     | table | postgres
+ public | guests            | table | postgres
+ public | payments          | table | postgres
+ public | properties        | table | postgres
+ public | reservation_rooms | table | postgres
+ public | reservations      | table | postgres
+ public | room_types        | table | postgres
+ public | rooms             | table | postgres
+ public | seasonal_rates    | table | postgres
+ public | services          | table | postgres
+ public | staff             | table | postgres
+(11 rows)
+
+                Table "public.reservation_rooms"
+     Column     |     Type      | Collation | Nullable | Default 
+----------------+---------------+-----------+----------+---------
+ reservation_id | integer       |           | not null | 
+ room_id        | integer       |           | not null | 
+ stay           | daterange     |           | not null | 
+ nightly_rate   | numeric(12,2) |           | not null | 
+ active         | boolean       |           | not null | true
+Indexes:
+    "reservation_rooms_pkey" PRIMARY KEY, btree (reservation_id, room_id)
+    "no_double_booking" EXCLUDE USING gist (room_id WITH =, stay WITH &&) WHERE (active)
+Check constraints:
+    "reservation_rooms_nightly_rate_check" CHECK (nightly_rate > 0::numeric)
+    "reservation_rooms_stay_check" CHECK (NOT isempty(stay))
+Foreign-key constraints:
+    "reservation_rooms_reservation_id_fkey" FOREIGN KEY (reservation_id) REFERENCES reservations(reservation_id) ON DELETE CASCADE
+    "reservation_rooms_room_id_fkey" FOREIGN KEY (room_id) REFERENCES rooms(room_id)
+Triggers:
+    trg_check_room_property BEFORE INSERT OR UPDATE ON reservation_rooms FOR EACH ROW EXECUTE FUNCTION check_room_property()
+
