@@ -1,0 +1,34 @@
+########## A: CHECK-OUT THAT SUCCEEDS (COMMIT) ##########
+ reservation_id |   status   
+----------------+------------
+            743 | Checked-in
+(1 row)
+
+BEGIN
+INSERT 0 1
+INSERT 0 1
+UPDATE 1
+COMMIT
+ reservation_id |   status    | balance_paid 
+----------------+-------------+--------------
+            743 | Checked-out |    517100.00
+(1 row)
+
+########## B: CHECK-OUT THAT FAILS (ROLLBACK) ##########
+ reservation_id |   status   | charges 
+----------------+------------+---------
+           1459 | Checked-in |       1
+(1 row)
+
+BEGIN
+INSERT 0 1
+psql:03-transactions-concurrency/01_checkout.sql:36: ERROR:  new row for relation "payments" violates check constraint "payments_method_check"
+DETAIL:  Failing row contains (86529, 1459, 50000.00, Crypto, Balance, 2026-10-28 12:11:50.274454+00).
+psql:03-transactions-concurrency/01_checkout.sql:38: ERROR:  current transaction is aborted, commands ignored until end of transaction block
+ROLLBACK
+--- After ROLLBACK: status and charge count unchanged ---
+ reservation_id |   status   | charges 
+----------------+------------+---------
+           1459 | Checked-in |       1
+(1 row)
+

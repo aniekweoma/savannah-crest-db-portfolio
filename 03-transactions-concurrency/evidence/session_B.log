@@ -1,0 +1,66 @@
+/******** QUERY *********/
+BEGIN;
+/************************/
+
+BEGIN
+/******** QUERY *********/
+SELECT * FROM free_deluxe_valentines;
+/************************/
+
+ free_rooms 
+------------
+          2
+(1 row)
+
+/******** QUERY *********/
+INSERT INTO reservation_rooms (reservation_id, room_id, stay, nightly_rate) SELECT (SELECT id FROM demo_ids WHERE label = 'res_B'), (SELECT id FROM demo_ids WHERE label = 'room_B'), '[2027-02-14,2027-02-15)', 85000;
+/************************/
+
+INSERT 0 1
+/******** QUERY *********/
+COMMIT;
+/************************/
+
+COMMIT
+/******** QUERY *********/
+BEGIN ISOLATION LEVEL SERIALIZABLE;
+/************************/
+
+BEGIN
+/******** QUERY *********/
+SELECT * FROM free_deluxe_valentines;
+/************************/
+
+ free_rooms 
+------------
+          2
+(1 row)
+
+/******** QUERY *********/
+INSERT INTO reservation_rooms (reservation_id, room_id, stay, nightly_rate) SELECT (SELECT id FROM demo_ids WHERE label = 'res_B'), (SELECT id FROM demo_ids WHERE label = 'room_B'), '[2027-02-14,2027-02-15)', 85000;
+/************************/
+
+INSERT 0 1
+/******** QUERY *********/
+COMMIT;
+/************************/
+
+/******** QUERY *********/
+BEGIN;
+/************************/
+
+BEGIN
+/******** QUERY *********/
+UPDATE reservations SET adults = 2 WHERE reservation_id = (SELECT id FROM demo_ids WHERE label = 'res_B');
+/************************/
+
+UPDATE 1
+/******** QUERY *********/
+UPDATE reservations SET children = 1 WHERE reservation_id = (SELECT id FROM demo_ids WHERE label = 'res_A');
+/************************/
+
+/******** QUERY *********/
+ROLLBACK;
+/************************/
+
+ROLLBACK
