@@ -1,0 +1,25 @@
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+CREATE INDEX
+psql:02-query-performance/optimise.sql:17: NOTICE:  materialized view "mv_monthly_occupancy" does not exist, skipping
+DROP MATERIALIZED VIEW
+SELECT 180
+CREATE INDEX
+VACUUM
+=== Refreshing the materialised view (cost of keeping it current) ===
+Timing is on.
+REFRESH MATERIALIZED VIEW
+Time: 319.452 ms
+Timing is off.
+=== Sizes of the new structures ===
+           name            |       kind        |  size   
+---------------------------+-------------------+---------
+ idx_folio_reservation_cov | index             | 4616 kB
+ no_double_booking         | index             | 2840 kB
+ idx_reservations_guest    | index             | 712 kB
+ idx_guests_phone          | index             | 480 kB
+ idx_arrivals_confirmed    | index             | 40 kB
+ mv_monthly_occupancy      | materialised view | 16 kB
+(6 rows)
+

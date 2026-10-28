@@ -1,0 +1,8 @@
+rooms                     150 rows
+seasonal_rates            252 rows
+guests                 15,000 rows
+staff                      78 rows
+reservations           55,386 rows
+reservation_rooms      55,386 rows
+folio_charges         149,049 rows
+payments               86,527 rows

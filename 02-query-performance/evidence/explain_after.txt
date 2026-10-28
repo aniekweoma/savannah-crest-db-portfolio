@@ -1,0 +1,122 @@
+=== H1: Availability search ===
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Hash Right Anti Join  (cost=6.10..18.13 rows=1 width=4) (actual time=5.080..5.084 rows=5 loops=1)
+   Hash Cond: (rr.room_id = r.room_id)
+   Buffers: shared hit=187
+   ->  Index Only Scan using no_double_booking on reservation_rooms rr  (cost=0.28..11.45 rows=181 width=4) (actual time=0.531..5.010 rows=141 loops=1)
+         Index Cond: (stay && '[2026-12-20,2026-12-23)'::daterange)
+         Heap Fetches: 0
+         Buffers: shared hit=184
+   ->  Hash  (cost=5.63..5.63 rows=15 width=8) (actual time=0.038..0.040 rows=25 loops=1)
+         Buckets: 1024  Batches: 1  Memory Usage: 9kB
+         Buffers: shared hit=3
+         ->  Hash Join  (cost=1.06..5.63 rows=15 width=8) (actual time=0.017..0.035 rows=25 loops=1)
+               Hash Cond: (r.room_type_id = t.room_type_id)
+               Buffers: shared hit=3
+               ->  Seq Scan on rooms r  (cost=0.00..4.25 rows=59 width=12) (actual time=0.009..0.020 rows=60 loops=1)
+                     Filter: ((property_id = 2) AND ((status)::text = 'Available'::text))
+                     Rows Removed by Filter: 90
+                     Buffers: shared hit=2
+               ->  Hash  (cost=1.05..1.05 rows=1 width=4) (actual time=0.005..0.005 rows=1 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on room_types t  (cost=0.00..1.05 rows=1 width=4) (actual time=0.002..0.003 rows=1 loops=1)
+                           Filter: ((name)::text = 'Deluxe'::text)
+                           Rows Removed by Filter: 3
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=197
+ Planning Time: 0.683 ms
+ Execution Time: 5.106 ms
+(28 rows)
+
+=== H2: Guest history by phone ===
+                                                              QUERY PLAN                                                              
+--------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=4.61..27.70 rows=4 width=19) (actual time=0.046..0.089 rows=11 loops=1)
+   Buffers: shared hit=13 read=3
+   ->  Index Scan using idx_guests_phone on guests g  (cost=0.29..8.30 rows=1 width=4) (actual time=0.026..0.027 rows=1 loops=1)
+         Index Cond: ((phone)::text = '08000000777'::text)
+         Buffers: shared hit=1 read=2
+   ->  Bitmap Heap Scan on reservations r  (cost=4.32..19.35 rows=4 width=23) (actual time=0.018..0.058 rows=11 loops=1)
+         Recheck Cond: (g.guest_id = guest_id)
+         Heap Blocks: exact=11
+         Buffers: shared hit=12 read=1
+         ->  Bitmap Index Scan on idx_reservations_guest  (cost=0.00..4.32 rows=4 width=0) (actual time=0.008..0.008 rows=11 loops=1)
+               Index Cond: (guest_id = g.guest_id)
+               Buffers: shared hit=1 read=1
+ Planning:
+   Buffers: shared hit=78 read=3
+ Planning Time: 0.366 ms
+ Execution Time: 0.104 ms
+(16 rows)
+
+=== H3: Tomorrow's arrivals ===
+                                                               QUERY PLAN                                                               
+----------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using idx_arrivals_confirmed on reservations r  (cost=0.28..8.30 rows=1 width=8) (actual time=0.021..0.077 rows=16 loops=1)
+   Index Cond: ((property_id = 2) AND (check_in = '2026-10-29'::date))
+   Buffers: shared hit=16 read=2
+ Planning:
+   Buffers: shared hit=10
+ Planning Time: 0.067 ms
+ Execution Time: 0.083 ms
+(7 rows)
+
+=== H4: Bill total ===
+                                                                     QUERY PLAN                                                                      
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+ Aggregate  (cost=4.51..4.52 rows=1 width=40) (actual time=0.038..0.038 rows=1 loops=1)
+   Buffers: shared hit=1 read=3
+   ->  Index Only Scan using idx_folio_reservation_cov on folio_charges  (cost=0.42..4.49 rows=4 width=5) (actual time=0.027..0.029 rows=14 loops=1)
+         Index Cond: (reservation_id = 2549)
+         Heap Fetches: 0
+         Buffers: shared hit=1 read=3
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.075 ms
+ Execution Time: 0.051 ms
+(10 rows)
+
+=== H5: Monthly occupancy report ===
+                                                                              QUERY PLAN                                                                              
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ HashAggregate  (cost=29506.05..29519.55 rows=600 width=16) (actual time=62.917..62.927 rows=36 loops=1)
+   Group Key: r.property_id, lower(daterange((d.d)::date, ((d.d + '1 mon'::interval))::date))
+   Batches: 1  Memory Usage: 49kB
+   Buffers: shared hit=1897
+   ->  Hash Join  (cost=5.67..19416.65 rows=252235 width=30) (actual time=0.151..50.055 rows=10689 loops=1)
+         Hash Cond: (rr.room_id = r.room_id)
+         Buffers: shared hit=1897
+         ->  Nested Loop  (cost=0.29..15577.51 rows=252235 width=26) (actual time=0.094..44.580 rows=10689 loops=1)
+               Buffers: shared hit=1895
+               ->  Function Scan on generate_series d  (cost=0.01..10.01 rows=1000 width=8) (actual time=0.012..0.014 rows=12 loops=1)
+               ->  Index Only Scan using no_double_booking on reservation_rooms rr  (cost=0.29..10.53 rows=504 width=18) (actual time=0.069..3.645 rows=891 loops=12)
+                     Index Cond: (stay && daterange((d.d)::date, ((d.d + '1 mon'::interval))::date))
+                     Heap Fetches: 0
+                     Buffers: shared hit=1895
+         ->  Hash  (cost=3.50..3.50 rows=150 width=8) (actual time=0.039..0.040 rows=150 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 14kB
+               Buffers: shared hit=2
+               ->  Seq Scan on rooms r  (cost=0.00..3.50 rows=150 width=8) (actual time=0.004..0.017 rows=150 loops=1)
+                     Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=92
+ Planning Time: 0.309 ms
+ Execution Time: 62.959 ms
+(23 rows)
+
+=== H5 (after): Monthly occupancy from the materialised view ===
+                                                   QUERY PLAN                                                    
+-----------------------------------------------------------------------------------------------------------------
+ Seq Scan on mv_monthly_occupancy  (cost=0.00..4.70 rows=36 width=18) (actual time=0.013..0.040 rows=36 loops=1)
+   Filter: ((month >= '2025-01-01'::date) AND (month < '2026-01-01'::date))
+   Rows Removed by Filter: 144
+   Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=65
+ Planning Time: 0.494 ms
+ Execution Time: 0.142 ms
+(8 rows)
+

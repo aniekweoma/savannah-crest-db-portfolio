@@ -1,0 +1,178 @@
+Timing is on.
+Time: 1.138 ms
+Time: 57.390 ms
+=== H1: Free Deluxe rooms at Jabi, 20-23 Dec 2026 ===
+ room_number | floor 
+-------------+-------
+ 211         |     2
+ 303         |     3
+ 310         |     3
+ 409         |     4
+ 511         |     5
+(5 rows)
+
+Time: 6.034 ms
+=== H2: Stay history of a returning guest, searched by phone ===
+ reservation_id |          hotel          |  check_in  | check_out  |   status    | channel 
+----------------+-------------------------+------------+------------+-------------+---------
+          12098 | Savannah Crest Asokoro  | 2025-12-15 | 2025-12-17 | Checked-out | Walk-in
+          19501 | Savannah Crest Jabi     | 2025-08-13 | 2025-08-16 | Checked-out | Website
+           1348 | Savannah Crest Asokoro  | 2025-04-07 | 2025-04-08 | Checked-out | Phone
+          49245 | Savannah Crest Gwarinpa | 2023-12-01 | 2023-12-08 | Checked-out | OTA
+          34102 | Savannah Crest Jabi     | 2023-06-09 | 2023-06-10 | Checked-out | Phone
+          39576 | Savannah Crest Gwarinpa | 2023-01-18 | 2023-01-19 | Checked-out | OTA
+          10726 | Savannah Crest Asokoro  | 2022-10-05 | 2022-10-09 | Cancelled   | Phone
+          10352 | Savannah Crest Asokoro  | 2022-05-22 | 2022-05-23 | Checked-out | Website
+          42093 | Savannah Crest Gwarinpa | 2022-05-18 | 2022-05-25 | Checked-out | Phone
+          35114 | Savannah Crest Jabi     | 2022-02-19 | 2022-02-24 | Checked-out | Website
+          52810 | Savannah Crest Gwarinpa | 2022-02-14 | 2022-02-21 | Checked-out | Website
+(11 rows)
+
+Time: 0.958 ms
+=== H3: Tomorrow's confirmed arrivals at Jabi ===
+ reservation_id |      guest      | room_number | adults | children | channel 
+----------------+-----------------+-------------+--------+----------+---------
+          19966 | Ifeoma Afolabi  | 202         |      1 |        0 | Walk-in
+          21081 | Ifeoma Okafor   | 205         |      3 |        0 | Website
+          21457 | Tola Eze        | 206         |      1 |        0 | OTA
+          22192 | Ikenna Garba    | 208         |      2 |        0 | Website
+          24069 | Emeka Udo       | 301         |      3 |        0 | Website
+          24429 | Segun Obi       | 302         |      2 |        0 | Walk-in
+          24799 | Bayo Nwosu      | 303         |      2 |        0 | Phone
+          27749 | Hauwa Adebayo   | 311         |      1 |        0 | OTA
+          28124 | Adaeze Obi      | 312         |      3 |        2 | Website
+          30699 | Emeka Obi       | 407         |      1 |        0 | OTA
+          31430 | Folake Ogunleye | 409         |      2 |        0 | Website
+          32175 | Ifeoma Lawal    | 411         |      1 |        0 | OTA
+          33254 | Chinedu Adebayo | 502         |      1 |        0 | Walk-in
+          33995 | Naledi Botha    | 504         |      2 |        0 | OTA
+          35820 | Ngozi Ibrahim   | 509         |      2 |        0 | OTA
+          36556 | Halima Olawale  | 511         |      1 |        0 | Website
+(16 rows)
+
+Time: 1.011 ms
+=== H4: Bill total for one reservation ===
+ charges | total_extras_ngn 
+---------+------------------
+      14 |        214500.00
+(1 row)
+
+Time: 0.430 ms
+=== H5: Occupancy % per hotel per month, 2025 ===
+          hotel          | month | nights_sold | occupancy_pct 
+-------------------------+-------+-------------+---------------
+ Savannah Crest Asokoro  | Jan   |         681 |          54.9
+ Savannah Crest Asokoro  | Feb   |         608 |          54.3
+ Savannah Crest Asokoro  | Mar   |         620 |          50.0
+ Savannah Crest Asokoro  | Apr   |         605 |          50.4
+ Savannah Crest Asokoro  | May   |         610 |          49.2
+ Savannah Crest Asokoro  | Jun   |         632 |          52.7
+ Savannah Crest Asokoro  | Jul   |         738 |          59.5
+ Savannah Crest Asokoro  | Aug   |         650 |          52.4
+ Savannah Crest Asokoro  | Sep   |         637 |          53.1
+ Savannah Crest Asokoro  | Oct   |         665 |          53.6
+ Savannah Crest Asokoro  | Nov   |         621 |          51.8
+ Savannah Crest Asokoro  | Dec   |         625 |          50.4
+ Savannah Crest Gwarinpa | Jan   |         825 |          53.2
+ Savannah Crest Gwarinpa | Feb   |         743 |          53.1
+ Savannah Crest Gwarinpa | Mar   |         792 |          51.1
+ Savannah Crest Gwarinpa | Apr   |         796 |          53.1
+ Savannah Crest Gwarinpa | May   |         817 |          52.7
+ Savannah Crest Gwarinpa | Jun   |         810 |          54.0
+ Savannah Crest Gwarinpa | Jul   |         858 |          55.4
+ Savannah Crest Gwarinpa | Aug   |         814 |          52.5
+ Savannah Crest Gwarinpa | Sep   |         769 |          51.3
+ Savannah Crest Gwarinpa | Oct   |         803 |          51.8
+ Savannah Crest Gwarinpa | Nov   |         780 |          52.0
+ Savannah Crest Gwarinpa | Dec   |         839 |          54.1
+ Savannah Crest Jabi     | Jan   |         930 |          50.0
+ Savannah Crest Jabi     | Feb   |         864 |          51.4
+ Savannah Crest Jabi     | Mar   |         978 |          52.6
+ Savannah Crest Jabi     | Apr   |         978 |          54.3
+ Savannah Crest Jabi     | May   |         967 |          52.0
+ Savannah Crest Jabi     | Jun   |         946 |          52.6
+ Savannah Crest Jabi     | Jul   |        1004 |          54.0
+ Savannah Crest Jabi     | Aug   |         998 |          53.7
+ Savannah Crest Jabi     | Sep   |         903 |          50.2
+ Savannah Crest Jabi     | Oct   |         969 |          52.1
+ Savannah Crest Jabi     | Nov   |         965 |          53.6
+ Savannah Crest Jabi     | Dec   |         930 |          50.0
+(36 rows)
+
+Time: 64.037 ms
+=== H6: ADR and RevPAR per hotel, 2025, with total row ===
+          hotel          | nights_sold | occupancy_pct | adr_ngn | revpar_ngn 
+-------------------------+-------------+---------------+---------+------------
+ Savannah Crest Asokoro  |        7692 |          52.7 |   93763 |      49399
+ Savannah Crest Gwarinpa |        9646 |          52.9 |   64700 |      34197
+ Savannah Crest Jabi     |       11432 |          52.2 |   70778 |      36947
+ ALL HOTELS              |       28770 |          52.5 |   74886 |      39351
+(4 rows)
+
+Time: 20.008 ms
+=== H7: Extras revenue by hotel and category, 2025 ===
+          hotel          |     category     | revenue_ngn  
+-------------------------+------------------+--------------
+ Savannah Crest Asokoro  | Food & Beverage  |  93436000.00
+ Savannah Crest Asokoro  | Laundry          |   5680000.00
+ Savannah Crest Asokoro  | Transport        |  11740000.00
+ Savannah Crest Asokoro  | Wellness         |   9950000.00
+ Savannah Crest Asokoro  | (all categories) | 120806000.00
+ Savannah Crest Gwarinpa | Food & Beverage  | 121042000.00
+ Savannah Crest Gwarinpa | Laundry          |   7360000.00
+ Savannah Crest Gwarinpa | Transport        |  13020000.00
+ Savannah Crest Gwarinpa | Wellness         |  12175000.00
+ Savannah Crest Gwarinpa | (all categories) | 153597000.00
+ Savannah Crest Jabi     | Food & Beverage  | 142727000.00
+ Savannah Crest Jabi     | Laundry          |   8527500.00
+ Savannah Crest Jabi     | Transport        |  16040000.00
+ Savannah Crest Jabi     | Wellness         |  14300000.00
+ Savannah Crest Jabi     | (all categories) | 181594500.00
+ ALL HOTELS              | (all categories) | 455997500.00
+(16 rows)
+
+Time: 42.144 ms
+=== H8: Top 10 guests by net spend ===
+      guest      | nationality | loyalty_tier | paid_bookings | net_spend_ngn | rank 
+-----------------+-------------+--------------+---------------+---------------+------
+ Ifeoma Olawale  | Nigerian    | Platinum     |            28 |    7964300.00 |    1
+ Folake Ogunleye | Nigerian    | Platinum     |            23 |    7764000.00 |    2
+ Ifeoma Okonkwo  | Nigerian    | Platinum     |            29 |    7751000.00 |    3
+ Xin Zhang       | Chinese     | Platinum     |            23 |    7384700.00 |    4
+ Efe Lawal       | Nigerian    | Platinum     |            27 |    7296200.00 |    5
+ Emeka Okafor    | Nigerian    | Platinum     |            19 |    7128300.00 |    6
+ Adaeze Chukwu   | Nigerian    | Platinum     |            23 |    7109800.00 |    7
+ Tola Danjuma    | Nigerian    | Platinum     |            18 |    6832800.00 |    8
+ Halima Ibrahim  | Nigerian    | Platinum     |            19 |    6677900.00 |    9
+ Halima Olawale  | Nigerian    | Platinum     |            24 |    6643600.00 |   10
+(10 rows)
+
+Time: 134.629 ms
+=== H9: Year-on-year revenue growth per hotel ===
+          hotel          | year |  revenue_ngn  | growth_pct 
+-------------------------+------+---------------+------------
+ Savannah Crest Asokoro  | 2022 |  827566100.00 |           
+ Savannah Crest Asokoro  | 2023 |  859912300.00 |        3.9
+ Savannah Crest Asokoro  | 2024 |  866476600.00 |        0.8
+ Savannah Crest Asokoro  | 2025 |  846143500.00 |       -2.3
+ Savannah Crest Gwarinpa | 2022 |  778387300.00 |           
+ Savannah Crest Gwarinpa | 2023 |  788114500.00 |        1.2
+ Savannah Crest Gwarinpa | 2024 |  798949400.00 |        1.4
+ Savannah Crest Gwarinpa | 2025 |  781744100.00 |       -2.2
+ Savannah Crest Jabi     | 2022 | 1006338600.00 |           
+ Savannah Crest Jabi     | 2023 |  991844300.00 |       -1.4
+ Savannah Crest Jabi     | 2024 |  994573900.00 |        0.3
+ Savannah Crest Jabi     | 2025 |  999673100.00 |        0.5
+(12 rows)
+
+Time: 102.174 ms
+=== H10: Booking lead time by channel (days between booking and arrival) ===
+ channel | bookings | avg_days | median_days 
+---------+----------+----------+-------------
+ Phone   |    11308 |     30.8 |          31
+ OTA     |    13639 |     30.6 |          31
+ Website |    22017 |     30.4 |          30
+ Walk-in |     8422 |      0.0 |           0
+(4 rows)
+
+Time: 31.342 ms
