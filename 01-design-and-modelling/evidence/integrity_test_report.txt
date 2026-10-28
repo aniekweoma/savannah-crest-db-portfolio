@@ -1,0 +1,41 @@
+BEGIN
+CREATE TABLE
+CREATE FUNCTION
+INSERT 0 2
+INSERT 0 1
+INSERT 0 2
+INSERT 0 2
+INSERT 0 1
+INSERT 0 1
+INSERT 0 1
+========== INTEGRITY TEST REPORT ==========
+ #  |                         description                          | expected |  actual  | result |                       database_message                       
+----+--------------------------------------------------------------+----------+----------+--------+--------------------------------------------------------------
+  1 | Ngozi books room 204 for 20-23 Dec                           | Accept   | Accepted | PASS   | 
+  2 | Bayo books room 204 for 21-23 Dec (overlap)                  | Reject   | Rejected | PASS   | conflicting key value violates exclusion constraint "no_doub
+  3 | Bayo books room 204 for 23-25 Dec (check-in on checkout day) | Accept   | Accepted | PASS   | 
+  4 | Ngozi cancels: trigger frees her room                        | Accept   | Accepted | PASS   | 
+  5 | Bayo retries room 204 for 21-23 Dec after cancellation       | Accept   | Accepted | PASS   | 
+  6 | Jabi booking takes an Asokoro room                           | Reject   | Rejected | PASS   | Room 1 does not belong to the hotel of reservation 3
+  7 | Check-out before check-in                                    | Reject   | Rejected | PASS   | new row for relation "reservations" violates check constrain
+  8 | Christmas peak rate 15 Dec - 5 Jan                           | Accept   | Accepted | PASS   | 
+  9 | Overlapping New Year rate 30 Dec - 10 Jan                    | Reject   | Rejected | PASS   | conflicting key value violates exclusion constraint "no_over
+ 10 | Invalid loyalty tier (Diamond)                               | Reject   | Rejected | PASS   | new row for relation "guests" violates check constraint "gue
+ 11 | Duplicate room number 204 at Jabi                            | Reject   | Rejected | PASS   | duplicate key value violates unique constraint "rooms_proper
+ 12 | Payment of zero naira                                        | Reject   | Rejected | PASS   | new row for relation "payments" violates check constraint "p
+(12 rows)
+
+ passed | failed 
+--------+--------
+     12 |      0
+(1 row)
+
+========== ROOM 204 BOOKINGS (final state) ==========
+ reservation_id | guest |          stay           | active |  status   
+----------------+-------+-------------------------+--------+-----------
+              1 | Ngozi | [2026-12-20,2026-12-23) | f      | Cancelled
+              2 | Bayo  | [2026-12-21,2026-12-23) | t      | Confirmed
+              3 | Bayo  | [2026-12-23,2026-12-25) | t      | Confirmed
+(3 rows)
+
+ROLLBACK
