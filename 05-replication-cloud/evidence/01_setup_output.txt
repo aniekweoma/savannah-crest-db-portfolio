@@ -1,0 +1,114 @@
+9b64d9fdf37db94a7bccdc2bbebb04c81206e23eb8a180c0fe25a6598ae3c021
+== 1. Start the primary ==
+Unable to find image 'postgres:17' locally
+17: Pulling from library/postgres
+6fc242d221a6: Pulling fs layer
+e6095e4c4fdd: Pulling fs layer
+bad9dce990ef: Pulling fs layer
+904defe665c0: Pulling fs layer
+455e5ed72fb1: Pulling fs layer
+55f036305357: Pulling fs layer
+db07174d12aa: Pulling fs layer
+03f2ecc50d4c: Pulling fs layer
+ff7cbe54dfda: Pulling fs layer
+0a26f79bdef8: Pulling fs layer
+1f1fbc5e4aa5: Pulling fs layer
+7f824adc2669: Pulling fs layer
+3cecd013db3b: Pulling fs layer
+455e5ed72fb1: Waiting
+55f036305357: Waiting
+7f0980702fb2: Pulling fs layer
+db07174d12aa: Waiting
+03f2ecc50d4c: Waiting
+1f1fbc5e4aa5: Waiting
+3cecd013db3b: Waiting
+0a26f79bdef8: Waiting
+7f824adc2669: Waiting
+ff7cbe54dfda: Waiting
+904defe665c0: Waiting
+7f0980702fb2: Waiting
+e6095e4c4fdd: Verifying Checksum
+e6095e4c4fdd: Download complete
+904defe665c0: Verifying Checksum
+904defe665c0: Download complete
+bad9dce990ef: Verifying Checksum
+bad9dce990ef: Download complete
+455e5ed72fb1: Verifying Checksum
+455e5ed72fb1: Download complete
+db07174d12aa: Verifying Checksum
+db07174d12aa: Download complete
+03f2ecc50d4c: Verifying Checksum
+03f2ecc50d4c: Download complete
+55f036305357: Download complete
+0a26f79bdef8: Download complete
+1f1fbc5e4aa5: Verifying Checksum
+1f1fbc5e4aa5: Download complete
+7f824adc2669: Download complete
+3cecd013db3b: Verifying Checksum
+3cecd013db3b: Download complete
+7f0980702fb2: Verifying Checksum
+7f0980702fb2: Download complete
+6fc242d221a6: Retrying in 5 seconds
+ff7cbe54dfda: Retrying in 5 seconds
+ff7cbe54dfda: Retrying in 4 seconds
+6fc242d221a6: Retrying in 4 seconds
+ff7cbe54dfda: Retrying in 3 seconds
+6fc242d221a6: Retrying in 3 seconds
+6fc242d221a6: Retrying in 2 seconds
+ff7cbe54dfda: Retrying in 2 seconds
+ff7cbe54dfda: Retrying in 1 second
+6fc242d221a6: Retrying in 1 second
+6fc242d221a6: Verifying Checksum
+6fc242d221a6: Download complete
+6fc242d221a6: Pull complete
+e6095e4c4fdd: Pull complete
+bad9dce990ef: Pull complete
+904defe665c0: Pull complete
+455e5ed72fb1: Pull complete
+55f036305357: Pull complete
+db07174d12aa: Pull complete
+03f2ecc50d4c: Pull complete
+ff7cbe54dfda: Verifying Checksum
+ff7cbe54dfda: Download complete
+ff7cbe54dfda: Pull complete
+0a26f79bdef8: Pull complete
+1f1fbc5e4aa5: Pull complete
+7f824adc2669: Pull complete
+3cecd013db3b: Pull complete
+7f0980702fb2: Pull complete
+Digest: sha256:31ba9c94a03ada9988f2bb493a22a75eef3a185884533e5cdbcd498ea835b08f
+Status: Downloaded newer image for postgres:17
+32e657920f88174111b43e356860bb8eaf879b49255a668d13875f737b855e69
+== 2. Allow a replication user ==
+CREATE ROLE
+ pg_reload_conf 
+----------------
+ t
+(1 row)
+
+== 3. Copy the savannah_crest database into the primary ==
+CREATE DATABASE
+ reservations_on_primary 
+-------------------------
+                   55386
+(1 row)
+
+== 4. Start the standby (clone the primary, then keep following it) ==
+cce7b5314fb98d329892680d8545667aefd8440a499a59c1051317f301c62047
+Timed out waiting for savannah-pg-standby
+== 5. Check ==
+ client_addr |   state   | sync_state 
+-------------+-----------+------------
+ 172.19.0.3  | streaming | async
+(1 row)
+
+ is_standby 
+------------
+ t
+(1 row)
+
+ reservations_on_standby 
+-------------------------
+                   55386
+(1 row)
+

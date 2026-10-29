@@ -1,0 +1,56 @@
+===== 1. Write on the primary, read on the standby =====
+ guest_id | first_name | last_name 
+----------+------------+-----------
+    15001 | Replica    | Test
+(1 row)
+
+INSERT 0 1
+-- Reading the same guest on the STANDBY:
+ guest_id | first_name | last_name 
+----------+------------+-----------
+    15001 | Replica    | Test
+(1 row)
+
+===== 2. The standby is read-only =====
+ERROR:  cannot execute INSERT in a read-only transaction
+===== 3. Replication lag after a large write (149,049 rows rewritten) =====
+UPDATE 149050
+   state   | not_yet_applied |    write_lag    |    flush_lag    |   replay_lag    
+-----------+-----------------+-----------------+-----------------+-----------------
+ streaming | 0 bytes         | 00:00:00.041475 | 00:00:00.045491 | 00:00:00.080464
+(1 row)
+
+-- Three seconds later:
+   state   | not_yet_applied 
+-----------+-----------------
+ streaming | 0 bytes
+(1 row)
+
+===== 4. Failover: the primary goes down =====
+savannah-pg-primary
+-- Standby still answers reads:
+ reservations_still_readable 
+-----------------------------
+                       55386
+(1 row)
+
+-- But cannot take bookings yet:
+ERROR:  cannot execute INSERT in a read-only transaction
+-- Promote the standby to primary:
+ pg_promote 
+------------
+ t
+(1 row)
+
+ still_standby 
+---------------
+ f
+(1 row)
+
+-- New primary takes a booking:
+ guest_id | first_name | last_name 
+----------+------------+-----------
+    15034 | After      | Failover
+(1 row)
+
+INSERT 0 1
