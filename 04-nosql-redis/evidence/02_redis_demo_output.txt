@@ -1,0 +1,55 @@
+===== 1. Free Deluxe rooms at Jabi on 24 Dec: Redis vs PostgreSQL =====
+Redis (read one key):      14
+PostgreSQL (run a query):  14
+
+===== 2. Safe booking: take a room only if one is left (atomic Lua script) =====
+Executive Suites free at Asokoro on 24 Dec: 3
+Booking 1 -> rooms left: 2
+Booking 2 -> rooms left: 1
+Booking 3 -> rooms left: 0
+Booking 4 -> rooms left: -1
+(-1 = sold out, booking refused; the counter never goes below 0)
+Counter restored to 3
+
+===== 3. Room hold that expires by itself (SET NX EX) =====
+Agent A holds room 204 for 10 s: OK
+Agent B tries the same room:     (nil)
+Seconds left on A's hold:        (integer) 10
+Agent A does not confirm. Waiting 11 seconds...
+Hold after 11 seconds:           (nil)
+Agent B tries again:             OK
+
+===== 4. Guest profile (hash) =====
+1) "name"
+2) "Yetunde Eze"
+3) "phone"
+4) "08000000777"
+5) "nationality"
+6) "Nigerian"
+7) "tier"
+8) "Gold"
+
+===== 5. Top 5 guests by spend: Redis sorted set vs SQL =====
+Redis:
+ 1) "guest:375"
+ 2) "7964300"
+ 3) "guest:130"
+ 4) "7764000"
+ 5) "guest:890"
+ 6) "7751000"
+ 7) "guest:1064"
+ 8) "7384700"
+ 9) "guest:1175"
+10) "7296200"
+SQL (guest | net spend):
+guest:375 | 7964300.00
+guest:130 | 7764000.00
+guest:890 | 7751000.00
+guest:1064 | 7384700.00
+guest:1175 | 7296200.00
+Guest 777's rank (0 = top):      (integer) 608
+
+===== 6. Speed and memory =====
+SET: 199600.80 requests per second, p50=0.127 msec
+GET: 199600.80 requests per second, p50=0.127 msec
+Memory used by all 15,373 keys: 4.79M
