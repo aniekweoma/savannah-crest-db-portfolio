@@ -1,6 +1,6 @@
 # Savannah Crest Hotels: Advanced Database Systems Portfolio
 
-**MIT 8103, MIVA Open University (2026/2027)** · Student: aniekweoma
+**MIT 8103 - Advanced Database Systems (CA)** · Student: Aniekwe Chioma Rita (Student ID: 301908570)
 
 **Case study:** Savannah Crest Hotels, a hotel group in Abuja with three properties (Asokoro, Jabi, Gwarinpa) and 150 rooms. Guests book online, by phone or at the desk; staff check them in and out, charge extras to the room and take payments.
 
