@@ -1,6 +1,6 @@
 # Savannah Crest Hotels: Advanced Database Systems Portfolio
 
-**MIT 8103 - Advanced Database Systems (CA)** · 
+**MIT 8103 - Advanced Database Systems (CA)** 
 
 **Student: Aniekwe Chioma Rita**
 
